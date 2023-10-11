@@ -1,0 +1,18 @@
+meta {
+  name: Create Issue
+  type: http
+  seq: 1
+}
+
+post {
+  url: {{baseUrl}}/api/issues
+  body: json
+  auth: none
+}
+
+body:json {
+  {
+    "title": "Issues Page not loading",
+    "description": "When a user first logs in the issue page is not loading. This seems to happen only on first login. Logging out and in again fixes the issue."
+  }
+}
