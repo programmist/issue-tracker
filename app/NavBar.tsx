@@ -16,7 +16,7 @@ const NavBar = () => {
       <Link href="/">
         <GiSpottedBug
           size={30}
-          className="fill-red-600 transition-transform hover:rotate-45"
+          className="transition-fill duration-300 hover:rotate-45 hover:fill-red-600 "
         />
       </Link>
       <ul className="flex space-x-6">
