@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateIssueSchema } from "../schemas";
+import { updateIssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
 
 interface Props {

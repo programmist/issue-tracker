@@ -1,10 +1,5 @@
 import { z } from "zod";
 
-/*
- * Note: In more complex applications there will be
- * different schemas for different CRUD operations
- */
-
 export const createIssueSchema = z.object({
   title: z
     .string()
