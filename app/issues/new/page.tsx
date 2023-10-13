@@ -56,11 +56,21 @@ const NewIssuePage = () => {
         <TextField.Input placeholder="Title" {...register("title")} />
       </TextField.Root>
       <ErrorMessage>{errors.title?.message}</ErrorMessage>
+      {/* TODO Tweak blockquote > p bottom margins to add a quote author line.
+          Maybe can modify how the the quote is rendered to include an author
+          inline that has different styles (e.g. no ::before::after quotes, etc)
+      */}
       <Controller
         name="description"
         control={control}
         render={({ field }) => {
-          return <SimpleMDE placeholder="Description" {...field} />;
+          return (
+            <SimpleMDE
+              className="prose text-black marker:text-black"
+              placeholder="Description"
+              {...field}
+            />
+          );
         }}
       />
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
