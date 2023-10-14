@@ -5,6 +5,13 @@ import prisma from "@/prisma/client";
 interface Props {
   params: { id: string };
 }
+
+export async function GET(request: NextRequest, { params: { id } }: Props) {
+  const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
+  // TODO: handle not found
+  return NextResponse.json(issue);
+}
+
 export async function PUT(request: NextRequest, { params: { id } }: Props) {
   const body = await request.json();
   const valid = updateIssueSchema.safeParse(body);
