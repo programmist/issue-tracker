@@ -1,7 +1,7 @@
 "use client";
 
 import { Link as RadixLink } from "@radix-ui/themes";
-import { useRouter } from "next/navigation";
+import NextLink from "next/link";
 import { ReactNode } from "react";
 
 interface Props {
@@ -9,11 +9,11 @@ interface Props {
   children: ReactNode;
 }
 const Link = ({ href, children }: Props) => {
-  const router = useRouter();
-  const go = () => {
-    router.push(href);
-  };
-  return <RadixLink onClick={go}>{children}</RadixLink>;
+  return (
+    <NextLink href={href} passHref legacyBehavior>
+      <RadixLink>{children}</RadixLink>
+    </NextLink>
+  );
 };
 
 export default Link;
