@@ -13,15 +13,15 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 
-type CreateIssueForm = z.infer<typeof createIssueSchema>;
+type CreateIssueType = z.infer<typeof createIssueSchema>;
 
-const NewIssueForm = () => {
+const IssueForm = () => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateIssueForm>({
+  } = useForm<CreateIssueType>({
     resolver: zodResolver(createIssueSchema),
   });
   const router = useRouter();
@@ -80,4 +80,4 @@ const NewIssueForm = () => {
   );
 };
 
-export default NewIssueForm;
+export default IssueForm;
