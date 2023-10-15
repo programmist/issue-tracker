@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-async-client-component */
 "use client";
 
 import { Button, Callout, TextField, Text } from "@radix-ui/themes";
@@ -16,7 +17,7 @@ import Spinner from "@/app/components/Spinner";
 
 type CreateIssueForm = z.infer<typeof createIssueSchema>;
 
-const NewIssuePage = () => {
+const NewIssuePage = async () => {
   const {
     register,
     control,
