@@ -29,6 +29,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
+  // TODO: Refactor so this can be used for editing as well as adding issues
   const onSubmit = handleSubmit(async (data) => {
     try {
       setSubmitting(true);

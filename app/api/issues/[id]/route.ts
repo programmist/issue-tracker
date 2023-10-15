@@ -12,12 +12,19 @@ export async function GET(request: NextRequest, { params: { id } }: Props) {
   return NextResponse.json(issue);
 }
 
-export async function PUT(request: NextRequest, { params: { id } }: Props) {
+export async function PATCH(request: NextRequest, { params: { id } }: Props) {
   const body = await request.json();
-  const valid = updateIssueSchema.safeParse(body);
 
+  const valid = updateIssueSchema.safeParse(body);
   if (!valid.success) {
-    return NextResponse.json({ error: valid.error.errors }, { status: 400 });
+    return NextResponse.json({ error: valid.error.format() }, { status: 400 });
+  }
+
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(id) },
+  });
+  if (!issue) {
+    return NextResponse.json({ error: "Invalid Issue" }, { status: 404 });
   }
 
   const updatedIssue = await prisma.issue.update({
