@@ -1,14 +1,10 @@
-import StatusBadge from "@/app/components/IssueStatusBadge";
+import { IssueStatusBadge, Link } from "@/app/components";
 import prisma from "@/prisma/client";
 import { Table } from "@radix-ui/themes";
-import delay from "delay";
 import IssuesToolbar from "./IssuesToolbar";
-import Link from "@/app/components/Link";
 
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
-  // FIXME: Remove after testing
-  await delay(1000);
 
   return (
     <div>
@@ -32,11 +28,11 @@ const IssuesPage = async () => {
                 <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
 
                 <div className="block md:hidden">
-                  <StatusBadge status={issue.status}></StatusBadge>
+                  <IssueStatusBadge status={issue.status}></IssueStatusBadge>
                 </div>
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
-                <StatusBadge status={issue.status}></StatusBadge>
+                <IssueStatusBadge status={issue.status}></IssueStatusBadge>
               </Table.Cell>
               <Table.Cell className="hidden md:table-cell">
                 {issue.createdAt.toLocaleDateString()}
