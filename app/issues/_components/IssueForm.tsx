@@ -3,6 +3,7 @@
 import { ErrorMessage, Spinner } from "@/app/components";
 import { createIssueSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Issue } from "@prisma/client";
 import { Button, Callout, TextField } from "@radix-ui/themes";
 import axios from "axios";
 import "easymde/dist/easymde.min.css";
@@ -15,7 +16,7 @@ import { z } from "zod";
 
 type CreateIssueType = z.infer<typeof createIssueSchema>;
 
-const IssueForm = () => {
+const IssueForm = ({ issue }: { issue?: Issue }) => {
   const {
     register,
     control,
@@ -52,7 +53,11 @@ const IssueForm = () => {
       )}
 
       <TextField.Root>
-        <TextField.Input placeholder="Title" {...register("title")} />
+        <TextField.Input
+          defaultValue={issue?.title}
+          placeholder="Title"
+          {...register("title")}
+        />
       </TextField.Root>
       <ErrorMessage>{errors.title?.message}</ErrorMessage>
       {/* TODO Tweak blockquote > p bottom margins to add a quote author line.
@@ -62,6 +67,7 @@ const IssueForm = () => {
       <Controller
         name="description"
         control={control}
+        defaultValue={issue?.description}
         render={({ field }) => {
           return (
             <SimpleMDE
