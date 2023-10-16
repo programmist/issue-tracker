@@ -45,4 +45,11 @@ const IssuesPage = async () => {
   );
 };
 
+// https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
+// Force dynamic rendering
+export const dynamic = "force-dynamic";
+
+// Force revalidate cache every 0 seconds (same effect)
+export const revalidte = 0;
+
 export default IssuesPage;

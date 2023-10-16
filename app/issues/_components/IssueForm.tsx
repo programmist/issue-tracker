@@ -1,7 +1,7 @@
 "use client";
 
 import { ErrorMessage, Spinner } from "@/app/components";
-import { createIssueSchema } from "@/app/validationSchemas";
+import { issueSchema } from "@/app/validationSchemas";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Issue } from "@prisma/client";
 import { Button, Callout, TextField } from "@radix-ui/themes";
@@ -14,27 +14,37 @@ import { FaExclamationTriangle } from "react-icons/fa";
 import SimpleMDE from "react-simplemde-editor";
 import { z } from "zod";
 
-type CreateIssueType = z.infer<typeof createIssueSchema>;
-
-const IssueForm = ({ issue }: { issue?: Issue }) => {
+export type IssueFormType = z.infer<typeof issueSchema>;
+interface Props {
+  issue?: Issue;
+}
+const IssueForm = ({ issue }: Props) => {
   const {
     register,
     control,
     handleSubmit,
     formState: { errors },
-  } = useForm<CreateIssueType>({
-    resolver: zodResolver(createIssueSchema),
+  } = useForm<IssueFormType>({
+    resolver: zodResolver(issueSchema),
   });
+
   const router = useRouter();
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-  // TODO: Refactor so this can be used for editing as well as adding issues
-  const onSubmit = handleSubmit(async (data) => {
+  const _onSubmit = handleSubmit(async (data: IssueFormType) => {
     try {
       setSubmitting(true);
-      await axios.post("/api/issues", data);
-      router.push("/issues");
+      if (issue) {
+        // Update Issue
+        await axios.patch(`/api/issues/${issue.id}`, data);
+        await router.push(`/issues/${issue.id}`);
+      } else {
+        // Create New Issue
+        await axios.post("/api/issues", data);
+        router.push("/issues");
+      }
+      router.refresh();
     } catch (error) {
       setError("An unexpected error occurred");
     } finally {
@@ -43,7 +53,7 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
   });
 
   return (
-    <form className="max-w-xl space-y-3" onSubmit={onSubmit}>
+    <form className="max-w-xl space-y-3" onSubmit={_onSubmit}>
       {error && (
         <Callout.Root color="red">
           <Callout.Icon>
@@ -80,8 +90,8 @@ const IssueForm = ({ issue }: { issue?: Issue }) => {
         }}
       />
       <ErrorMessage>{errors.description?.message}</ErrorMessage>
-      <Button disabled={submitting}>
-        Submit New Issue {submitting && <Spinner />}
+      <Button disabled={submitting} className="hover:cursor-pointer">
+        Submit {submitting && <Spinner />}
       </Button>
     </form>
   );

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { updateIssueSchema } from "@/app/validationSchemas";
+import { issueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
 
 interface Props {
@@ -8,21 +8,23 @@ interface Props {
 
 export async function GET(request: NextRequest, { params: { id } }: Props) {
   const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
-  // TODO: handle not found
+
+  if (!issue) {
+    return NextResponse.json({ error: "Invalid Issue" }, { status: 404 });
+  }
+
   return NextResponse.json(issue);
 }
 
 export async function PATCH(request: NextRequest, { params: { id } }: Props) {
   const body = await request.json();
 
-  const valid = updateIssueSchema.safeParse(body);
+  const valid = issueSchema.safeParse(body);
   if (!valid.success) {
     return NextResponse.json({ error: valid.error.format() }, { status: 400 });
   }
 
-  const issue = await prisma.issue.findUnique({
-    where: { id: parseInt(id) },
-  });
+  const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
   if (!issue) {
     return NextResponse.json({ error: "Invalid Issue" }, { status: 404 });
   }

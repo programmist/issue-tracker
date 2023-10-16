@@ -1,14 +1,14 @@
+import prisma from "@/prisma/client";
 import "easymde/dist/easymde.min.css";
 import dynamic from "next/dynamic";
-import IssueFormLoadingPage from "../../_components/IssueFormLoadingPage";
-import prisma from "@/prisma/client";
 import { notFound } from "next/navigation";
+import IssueFormSkeleton from "./loading";
 
 const IssueForm = dynamic(
   async () => import("@/app/issues/_components/IssueForm"),
   {
     ssr: false,
-    loading: () => <IssueFormLoadingPage />,
+    loading: () => <IssueFormSkeleton />,
   },
 );
 
