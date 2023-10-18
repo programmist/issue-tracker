@@ -6,6 +6,9 @@ interface Props {
   params: { id: string };
 }
 
+/**
+ * Get an Issue
+ */
 export async function GET(request: NextRequest, { params: { id } }: Props) {
   const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
 
@@ -16,6 +19,9 @@ export async function GET(request: NextRequest, { params: { id } }: Props) {
   return NextResponse.json(issue);
 }
 
+/**
+ * Patch an Issue
+ */
 export async function PATCH(request: NextRequest, { params: { id } }: Props) {
   const body = await request.json();
 
@@ -37,10 +43,12 @@ export async function PATCH(request: NextRequest, { params: { id } }: Props) {
       status: body.status,
     },
   });
-
   return NextResponse.json(updatedIssue);
 }
 
+/**
+ * Delete an Issue
+ */
 export async function DELETE(request: NextRequest, { params: { id } }: Props) {
   const issue = await prisma.issue.findUnique({ where: { id: parseInt(id) } });
 
