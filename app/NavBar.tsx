@@ -1,10 +1,17 @@
 "use client";
+import {
+  Avatar,
+  Box,
+  Container,
+  DropdownMenu,
+  Flex,
+  Text,
+} from "@radix-ui/themes";
 import classnames from "classnames";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { GiSpottedBug } from "react-icons/gi";
-import { useSession } from "next-auth/react";
-import { Box, Flex, Container } from "@radix-ui/themes";
 import { Spinner } from "./components";
 
 const NavBar = () => {
@@ -49,7 +56,10 @@ const NavBar = () => {
           <Box>
             {status === "loading" && <Spinner />}
             {status === "authenticated" && (
-              <Link href="/api/auth/signout">Logout</Link>
+              <AuthStatusMenu
+                email={session.user!.email!}
+                image={session.user!.image!}
+              />
             )}
             {status === "unauthenticated" && (
               <Link href="/api/auth/signin">Login</Link>
@@ -58,6 +68,30 @@ const NavBar = () => {
         </Flex>
       </Container>
     </nav>
+  );
+};
+
+const AuthStatusMenu = ({ email, image }: { email: string; image: string }) => {
+  return (
+    <DropdownMenu.Root>
+      <DropdownMenu.Trigger>
+        <Avatar
+          src={image!}
+          fallback="?"
+          size="2"
+          radius="full"
+          className="cursor-pointer"
+        />
+      </DropdownMenu.Trigger>
+      <DropdownMenu.Content>
+        <DropdownMenu.Label>
+          <Text size="3">{email}</Text>
+        </DropdownMenu.Label>
+        <DropdownMenu.Item>
+          <Link href="/api/auth/signout">Logout</Link>
+        </DropdownMenu.Item>
+      </DropdownMenu.Content>
+    </DropdownMenu.Root>
   );
 };
 
