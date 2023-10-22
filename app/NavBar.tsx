@@ -23,7 +23,7 @@ const NavBar = () => {
             <Link href="/">
               <GiSpottedBug
                 size={30}
-                className="transition-fill duration-300 hover:rotate-45 hover:fill-red-600 "
+                className="transition-fill duration-300 hover:rotate-45 hover:fill-red-600"
               />
             </Link>
             <NavLinks />
