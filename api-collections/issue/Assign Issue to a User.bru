@@ -1,0 +1,21 @@
+meta {
+  name: Assign Issue to a User
+  type: http
+  seq: 4
+}
+
+patch {
+  url: {{baseUrl}}/api/issues/16
+  body: json
+  auth: none
+}
+
+headers {
+  Cookie: <GET FROM BROWSER>
+}
+
+body:json {
+  {
+    "assignedToUserId": "clnxodlle0000o2w8c9s9b40m"
+  }
+}
