@@ -5,13 +5,6 @@ import { Select } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import "@/string.extensions";
 
-// const statuses: { label: string; value?: Status }[] = [
-//   { label: "All" },
-//   { label: "Open", value: Status.OPEN },
-//   { label: "Closed", value: Status.CLOSED },
-//   { label: "In Progress", value: Status.IN_PROGRESS },
-// ];
-
 var statuses: { label: string; value?: Status }[] = [
   { label: "All" },
   ...Object.values(Status).map((status) => ({
@@ -24,13 +17,21 @@ const IssueStatusFilter = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
+  const filterByStatus = (status: string) => {
+    const params = new URLSearchParams(
+      Array.from(searchParams.entries()).filter(([key]) => key !== "status"),
+    );
+
+    if (status !== "ALL") params.append("status", status);
+
+    const query = params.size > 0 ? `?${params}` : "";
+    router.push(`/issues${query}`);
+  };
+
   return (
     <Select.Root
       defaultValue={searchParams.get("status") ?? ""}
-      onValueChange={(status) => {
-        const query = status === "ALL" ? "" : `?status=${status}`;
-        router.push(`/issues${query}`);
-      }}
+      onValueChange={filterByStatus}
     >
       <Select.Trigger placeholder="Filter by status..." />
       <Select.Content>

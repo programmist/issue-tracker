@@ -1,21 +1,45 @@
 import { IssueStatusBadge, Link } from "@/app/components";
 import prisma from "@/prisma/client";
+import { Issue, Status } from "@prisma/client";
+import { TriangleDownIcon, TriangleUpIcon } from "@radix-ui/react-icons";
 import { Table } from "@radix-ui/themes";
+import classNames from "classnames";
+import NextLink from "next/link";
 import IssuesToolbar from "./IssuesToolbar";
-import { Status } from "@prisma/client";
 
 interface Props {
-  searchParams: { status: Status };
+  searchParams: {
+    status: Status;
+    orderBy: keyof Issue;
+    sortOrder: "asc" | "desc";
+  };
 }
 
 const IssuesPage = async ({ searchParams }: Props) => {
+  const columns: { label: string; value: keyof Issue }[] = [
+    { label: "Issue", value: "title" },
+    { label: "Status", value: "status" },
+    { label: "Created", value: "createdAt" },
+  ];
+
   const status = Object.values(Status).includes(searchParams.status)
     ? searchParams.status
     : undefined;
 
+  const orderBy = columns.map((col) => col.value).includes(searchParams.orderBy)
+    ? searchParams.orderBy
+    : "title";
+
+  const sortOrder = ["asc", "desc"].includes(searchParams.sortOrder)
+    ? searchParams.sortOrder
+    : "asc";
+
   const issues = await prisma.issue.findMany({
     where: {
       status,
+    },
+    orderBy: {
+      [orderBy]: sortOrder,
     },
   });
 
@@ -25,13 +49,36 @@ const IssuesPage = async ({ searchParams }: Props) => {
       <Table.Root variant="surface">
         <Table.Header className="text-center md:text-left">
           <Table.Row>
-            <Table.ColumnHeaderCell>Issue</Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Status
-            </Table.ColumnHeaderCell>
-            <Table.ColumnHeaderCell className="hidden md:table-cell">
-              Created
-            </Table.ColumnHeaderCell>
+            {columns.map((column, idx) => (
+              <Table.ColumnHeaderCell
+                key={column.value}
+                className={classNames({
+                  "hidden md:table-cell": idx > 0,
+                })}
+              >
+                <NextLink
+                  href={{
+                    query: {
+                      ...searchParams,
+                      orderBy: column.value,
+                      sortOrder:
+                        searchParams.sortOrder === "asc" ? "desc" : "asc",
+                    },
+                  }}
+                >
+                  {column.label}
+                </NextLink>
+                {column.value === searchParams.orderBy && (
+                  <>
+                    {searchParams.sortOrder === "desc" ? (
+                      <TriangleDownIcon className="inline" />
+                    ) : (
+                      <TriangleUpIcon className="inline" />
+                    )}
+                  </>
+                )}
+              </Table.ColumnHeaderCell>
+            ))}
           </Table.Row>
         </Table.Header>
         <Table.Body>
