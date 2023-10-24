@@ -3,6 +3,7 @@
 import { Status } from "@prisma/client";
 import { Select } from "@radix-ui/themes";
 import { useRouter, useSearchParams } from "next/navigation";
+import "@/string.extensions";
 
 // const statuses: { label: string; value?: Status }[] = [
 //   { label: "All" },
@@ -11,18 +12,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 //   { label: "In Progress", value: Status.IN_PROGRESS },
 // ];
 
-var titleCase = (str: string) =>
-  str
-    .split("_")
-    .reduce((acc, frag) => {
-      return acc + " " + frag[0] + frag.toLowerCase().slice(1);
-    }, "")
-    .trim();
-
 var statuses: { label: string; value?: Status }[] = [
   { label: "All" },
   ...Object.values(Status).map((status) => ({
-    label: titleCase(status),
+    label: status.titleCase(),
     value: status,
   })),
 ];
