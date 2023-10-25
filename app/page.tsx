@@ -3,6 +3,7 @@ import { Flex, Grid } from "@radix-ui/themes";
 import IssueChart from "./dashboard/IssueChart";
 import IssueSummary from "./dashboard/IssueSummary";
 import LatestIssues from "./dashboard/LatestIssues";
+import { Metadata } from "next";
 
 export default async function Home() {
   const [open, inProgress, closed] = await prisma.$transaction([
@@ -37,3 +38,13 @@ export default async function Home() {
     </>
   );
 }
+
+const title = "Issue Tracker - Dashboard";
+const description = "View a summary of project issues";
+
+export const metadata: Metadata = {
+  title,
+  description,
+  openGraph: { title, description },
+  twitter: { title, description },
+};

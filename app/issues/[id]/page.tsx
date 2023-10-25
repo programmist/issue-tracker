@@ -8,8 +8,12 @@ import DeleteIssueButton from "./DeleteIssueButton";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/app/api/auth/authOptions";
 import AssigneeSelect from "./AssigneeSelect";
+import { Metadata } from "next";
 
-const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
+interface Props {
+  params: { id: string };
+}
+const IssueDetailPage = async ({ params }: Props) => {
   if (Number.isNaN(parseInt(params.id))) notFound();
 
   const session = await getServerSession(authOptions);
@@ -39,5 +43,21 @@ const IssueDetailPage = async ({ params }: { params: { id: string } }) => {
     </Grid>
   );
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  const title = `Issue: ${issue?.title}`;
+  const description = issue?.description;
+
+  return {
+    title,
+    description,
+    openGraph: { title, description },
+    twitter: { title, description },
+  };
+}
 
 export default IssueDetailPage;

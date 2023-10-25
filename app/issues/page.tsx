@@ -4,6 +4,7 @@ import { Flex } from "@radix-ui/themes";
 import Pagination from "../components/Pagination";
 import IssueTable, { IssueQuery, columnNames } from "./IssueTable";
 import IssuesToolbar from "./IssuesToolbar";
+import { Metadata } from "next";
 
 interface Props {
   searchParams: IssueQuery;
@@ -53,9 +54,16 @@ const IssuesPage = async ({ searchParams }: Props) => {
 
 // https://nextjs.org/docs/app/api-reference/file-conventions/route-segment-config
 // Force dynamic rendering
-// export const dynamic = "force-dynamic";
+export const dynamic = "force-dynamic";
 
-// Force revalidate cache every 0 seconds (same effect)
-// export const revalidate = 0;
+const title = "Issue Tracker - Issue List";
+const description = "View all project issues";
+
+export const metadata: Metadata = {
+  title,
+  description,
+  openGraph: { title, description },
+  twitter: { title, description },
+};
 
 export default IssuesPage;
