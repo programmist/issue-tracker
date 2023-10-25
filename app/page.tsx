@@ -1,10 +1,16 @@
-import Pagination from "./components/Pagination";
+import LatestIssues from "./dashboard/LatestIssues";
 
 export default function Home({
   searchParams: { page },
 }: {
   searchParams: { page: string };
 }) {
-  const currentPage = parseInt(page) || 1;
-  return <Pagination itemCount={100} pageSize={10} currentPage={currentPage} />;
+  /**
+   * Dashboard
+   * - Top: Summary of issues
+   * - Middle: Chart
+   * - Right Side: Latest Issues
+   */
+
+  return <LatestIssues />;
 }
