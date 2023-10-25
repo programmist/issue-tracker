@@ -1,5 +1,7 @@
 import prisma from "@/prisma/client";
 import IssueSummary from "./dashboard/IssueSummary";
+import IssueChart from "./dashboard/IssueChart";
+import LatestIssues from "./dashboard/LatestIssues";
 
 export default async function Home({
   searchParams: { page },
@@ -31,5 +33,11 @@ export default async function Home({
    * - Right Side: Latest Issues
    */
 
-  return <IssueSummary open={open} inProgress={inProgress} closed={closed} />;
+  return (
+    <>
+      <LatestIssues />
+      <IssueSummary open={open} inProgress={inProgress} closed={closed} />
+      <IssueChart open={open} inProgress={inProgress} closed={closed} />
+    </>
+  );
 }
