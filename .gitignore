@@ -26,6 +26,10 @@ yarn-error.log*
 
 # local env files
 .env*.local
+.env
+
+# If you accidentally commit a .env file to git, try:
+# https://github.com/newren/git-filter-repo
 
 # vercel
 .vercel
@@ -33,5 +37,3 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-.env
