@@ -6,12 +6,14 @@ import { Table } from "@radix-ui/themes";
 import classNames from "classnames";
 import NextLink from "next/link";
 import IssuesToolbar from "./IssuesToolbar";
+import Pagination from "../components/Pagination";
 
 interface Props {
   searchParams: {
     status: Status;
     orderBy: keyof Issue;
     sortOrder: "asc" | "desc";
+    page: string;
   };
 }
 
@@ -26,6 +28,8 @@ const IssuesPage = async ({ searchParams }: Props) => {
     ? searchParams.status
     : undefined;
 
+  const where = { status };
+
   const orderBy = columns.map((col) => col.value).includes(searchParams.orderBy)
     ? searchParams.orderBy
     : "title";
@@ -34,14 +38,19 @@ const IssuesPage = async ({ searchParams }: Props) => {
     ? searchParams.sortOrder
     : "asc";
 
+  const page = parseInt(searchParams.page) || 1;
+  const pageSize = 10;
+
   const issues = await prisma.issue.findMany({
-    where: {
-      status,
-    },
+    where,
     orderBy: {
       [orderBy]: sortOrder,
     },
+    skip: (page - 1) * pageSize,
+    take: pageSize,
   });
+
+  const issueCount = await prisma.issue.count({ where });
 
   return (
     <div>
@@ -101,6 +110,11 @@ const IssuesPage = async ({ searchParams }: Props) => {
           ))}
         </Table.Body>
       </Table.Root>
+      <Pagination
+        pageSize={pageSize}
+        itemCount={issueCount}
+        currentPage={page}
+      />
     </div>
   );
 };

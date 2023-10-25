@@ -5,6 +5,6 @@ export default function Home({
 }: {
   searchParams: { page: string };
 }) {
-  const currentPage = page ? parseInt(page) : 1;
+  const currentPage = parseInt(page) || 1;
   return <Pagination itemCount={100} pageSize={10} currentPage={currentPage} />;
 }
