@@ -28,12 +28,8 @@ async function seedDatabase() {
   console.log("Seeded the database with users and issues.");
 }
 
-seedDatabase()
-  .catch(async (error) => {
-    console.error("Error seeding the database:", error);
-    await prisma.$disconnect();
-    process.exit(1);
-  })
-  .finally(async () => {
-    await prisma.$disconnect();
-  });
+seedDatabase().catch(async (error) => {
+  console.error("Error seeding the database:", error);
+  await prisma.$disconnect();
+  process.exit(1);
+});
