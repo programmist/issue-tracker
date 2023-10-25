@@ -1,13 +1,10 @@
 import prisma from "@/prisma/client";
-import IssueSummary from "./dashboard/IssueSummary";
+import { Flex, Grid } from "@radix-ui/themes";
 import IssueChart from "./dashboard/IssueChart";
+import IssueSummary from "./dashboard/IssueSummary";
 import LatestIssues from "./dashboard/LatestIssues";
 
-export default async function Home({
-  searchParams: { page },
-}: {
-  searchParams: { page: string };
-}) {
+export default async function Home() {
   const [open, inProgress, closed] = await prisma.$transaction([
     prisma.issue.count({
       where: {
@@ -26,18 +23,17 @@ export default async function Home({
     }),
   ]);
 
-  /**
-   * Dashboard
-   * - Top: Summary of issues
-   * - Middle: Chart
-   * - Right Side: Latest Issues
-   */
+  const issueStatusProps = { open, inProgress, closed };
 
   return (
     <>
-      <LatestIssues />
-      <IssueSummary open={open} inProgress={inProgress} closed={closed} />
-      <IssueChart open={open} inProgress={inProgress} closed={closed} />
+      <Grid columns={{ initial: "1", md: "2" }} gap="5" width="auto">
+        <Flex direction="column" gap="5">
+          <IssueSummary {...issueStatusProps} />
+          <IssueChart {...issueStatusProps} />
+        </Flex>
+        <LatestIssues />
+      </Grid>
     </>
   );
 }
