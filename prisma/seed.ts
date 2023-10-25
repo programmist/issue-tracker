@@ -7,13 +7,14 @@ const prisma = new PrismaClient();
 
 async function seedDatabase() {
   // Create 5 Users, assigning them 3 Issues each
-  users.forEach(async ({ name, email }, i) => {
+  users.forEach(async ({ name, email, image }, i) => {
     await prisma.user.upsert({
       where: { email },
       update: {},
       create: {
         email,
         name,
+        image,
         assignedIssues: {
           create: issues.slice(i * 3, (i + 1) * 3),
         },

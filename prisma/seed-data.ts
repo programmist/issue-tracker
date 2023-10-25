@@ -181,9 +181,34 @@ export const issues = [
 ];
 
 export const users = [
-  { name: "Jane Anderson", email: "janderson@example.com" },
-  { name: "David Miller", email: "dmiller@example.com" },
-  { name: "Maria Garcia", email: "mgarcia@example.com" },
-  { name: "Richard Clark", email: "rclark@example.com" },
-  { name: "Anna Taylor", email: "ataylor@example.com" },
+  {
+    name: "Peter Norvig",
+    email: "pnorvig@example.com",
+    image: "/users/pnorvig.jpeg",
+  },
+  {
+    name: "Douglas Crockford",
+    email: "dcrockford@example.com",
+    image: "/users/dcrockford.png",
+  },
+  {
+    name: "Linus Torvalds",
+    email: "ltorvalds@example.com",
+    image: "/users/ltorvalds.jpeg",
+  },
+  {
+    name: "Jane Anderson",
+    email: "janderson@example.com",
+    image: "/users/janderson.gif",
+  },
+  {
+    name: "Anna Taylor",
+    email: "ataylor@example.com",
+    image: "/users/ataylor.jpeg",
+  },
+  {
+    name: "Tony Childs",
+    email: "tony.childs@gmail.com",
+    image: "/users/tony.childs.png",
+  },
 ];
