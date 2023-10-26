@@ -39,6 +39,8 @@ export default async function Home() {
   );
 }
 
+export const dynamic = "force-dynamic";
+
 const title = "Issue Tracker - Dashboard";
 const description = "View a summary of project issues";
 
