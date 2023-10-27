@@ -10,6 +10,7 @@ import { authOptions } from "@/app/api/auth/authOptions";
 import AssigneeSelect from "./AssigneeSelect";
 import { Metadata } from "next";
 import { cache } from "react";
+import IssueStatusSelector from "./IssueStatusSelector";
 
 const fetchUser = cache((issueId: number) =>
   prisma.issue.findUnique({ where: { id: issueId } }),
@@ -38,6 +39,7 @@ const IssueDetailPage = async ({ params }: Props) => {
         <Box className="col-span-1">
           <Flex direction="column" gap="4">
             <AssigneeSelect issue={issue} />
+            <IssueStatusSelector issue={issue} />
             <EditIssueButton issueId={issue.id} />
             <DeleteIssueButton issueId={issue.id} />
           </Flex>
